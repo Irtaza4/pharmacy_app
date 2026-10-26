@@ -1,16 +1,9 @@
-# pharmacy_app
+# xefag pharmacy prototype
 
-A new Flutter project.
+A Flutter recreation of the welcome, Relax, and Sleep screens in [Pharmacy Mobile App by Bogdan Nikitin for Nixtio](https://dribbble.com/shots/24632930-Pharmacy-Mobile-App).
 
-## Getting Started
+Includes animated product switching, 30/60/90 pack selection, quantity controls, and an in-memory shopping bag with totals and removal. Packaging is drawn locally as vector artwork; original product renders and typefaces were not provided. Pack pricing beyond the reference's $25.50 is illustrative.
 
-This project is a starting point for a Flutter application.
+Run with `flutter run`, or preview in a browser with `flutter run -d chrome`. Verify with `flutter analyze` and `flutter test`.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This is a UI prototype. Checkout, authentication, persistence, and a store backend are not connected. Product wording and quantities mirror the visual reference and are not verified product information.

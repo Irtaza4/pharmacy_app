@@ -1,30 +1,62 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:pharmacy_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  Future<void> start(
+    WidgetTester tester, {
+    Size size = const Size(390, 844),
+  }) async {
+    tester.view.physicalSize = size;
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(const MyApp());
+    await tester.pumpAndSettle();
+  }
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('Product selection, pack pricing, quantities, and bag removal', (
+    tester,
+  ) async {
+    await start(tester);
+    expect(find.text('Powerful\nBoost'), findsOneWidget);
+    await tester.tap(find.text('Products'));
+    await tester.pumpAndSettle();
+    expect(find.text('Relax 30\nDissolvable Wafers'), findsOneWidget);
+    await tester.tap(find.text('60'));
+    await tester.pumpAndSettle();
+    expect(find.text('\$51.00'), findsOneWidget);
+    await tester.tap(find.byTooltip('Increase quantity'));
     await tester.pump();
+    expect(find.text('\$102.00'), findsOneWidget);
+    await tester.tap(find.text('Buy Now'));
+    await tester.pumpAndSettle();
+    expect(find.text('Your bag'), findsOneWidget);
+    expect(find.text('2 × \$51.00'), findsOneWidget);
+    await tester.tap(find.byTooltip('Remove Relax'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('A little wellbeing'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('Both products and home remain usable on a small phone', (
+    tester,
+  ) async {
+    await start(tester, size: const Size(320, 568));
+    await tester.tap(find.text('Products'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Sleep'));
+    await tester.pumpAndSettle();
+    expect(find.text('Sleep 30\nDissolvable Wafers'), findsOneWidget);
+    await tester.ensureVisible(find.text('Buy Now'));
+    await tester.tap(find.text('Buy Now'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 × \$25.50'), findsOneWidget);
+    Navigator.of(tester.element(find.text('Your bag'))).pop();
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Back to home'));
+    await tester.pumpAndSettle();
+    expect(find.text('Powerful\nBoost'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }
