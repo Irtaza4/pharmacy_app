@@ -229,13 +229,9 @@ class _CartCard extends StatelessWidget {
                 context,
                 ProductView(product: item.product, heroTag: tag),
               ),
-              child: Container(
+              child: SizedBox(
                 width: 77,
                 height: 121,
-                decoration: BoxDecoration(
-                  color: item.product.color.withValues(alpha: .45),
-                  borderRadius: BorderRadius.circular(18),
-                ),
                 child: Hero(
                   tag: tag,
                   child: Bottle(product: item.product),
