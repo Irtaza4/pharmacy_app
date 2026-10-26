@@ -33,6 +33,7 @@ class _CatalogViewState extends State<CatalogView> {
     final shop = ShopScope.of(context);
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             const ShopHeader(),
@@ -182,10 +183,15 @@ class _CatalogViewState extends State<CatalogView> {
                               ),
                         ),
                       ),
-                      const SliverToBoxAdapter(
+                      SliverToBoxAdapter(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(24, 0, 24, 24),
-                          child: Text(
+                          padding: EdgeInsets.fromLTRB(
+                            24,
+                            0,
+                            24,
+                            24 + MediaQuery.paddingOf(context).bottom,
+                          ),
+                          child: const Text(
                             'Good things come with a little care.\nFree standard delivery on orders of \$60 or more.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
